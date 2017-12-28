@@ -56,6 +56,14 @@ class CheckEbsSnapshots < Sensu::Plugin::Check::CLI
          default: false,
          boolean: true
 
+  option :filter_tag,
+          short:       '-t T',
+          long:        '--tag TAG',
+          description: 'Tag to filter volumes by',
+          default: 'Name'
+
+
+
   def run
     errors = []
     @ec2 = Aws::EC2::Client.new
@@ -68,7 +76,7 @@ class CheckEbsSnapshots < Sensu::Plugin::Check::CLI
         },
         {
           name: 'tag-key',
-          values: ['Name']
+          values: [config[:filter_tag]]
         }
       ]
     )
